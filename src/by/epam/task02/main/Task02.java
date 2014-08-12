@@ -41,6 +41,7 @@ public class Task02 {
             
             String str = compileText(rootEntity);
             printResult(str);
+            printResult(str); //new
             
             Set set = findEntitys(rootEntity, ETYPE.WORD);
             printResult(set);
