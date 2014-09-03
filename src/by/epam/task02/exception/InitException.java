@@ -12,11 +12,11 @@ import static by.epam.task02.main.Task02.localLog;
  *
  * @author Helena.Grouk
  */
-public class NullInitException extends ProjectException {
+public class InitException extends ProjectException {
 
-    public NullInitException(){}
+    public InitException(){}
     
-    public NullInitException(String msg) {
+    public InitException(String msg) {
         localLog.error("NullInitException " + msg);
         localLog.info(this.getStackTrace());
     }

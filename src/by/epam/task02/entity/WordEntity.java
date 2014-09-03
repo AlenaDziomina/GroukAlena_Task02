@@ -6,7 +6,7 @@
 
 package by.epam.task02.entity;
 
-import by.epam.task02.exception.NullInitException;
+import by.epam.task02.exception.InitException;
 import java.util.Objects;
 
 /**
@@ -20,7 +20,7 @@ public final class WordEntity extends TextEntity
     
     public WordEntity(){}
     
-    public WordEntity(String word) throws NullInitException {
+    public WordEntity(String word) throws InitException {
         setWord(word);
     }
     
@@ -65,9 +65,9 @@ public final class WordEntity extends TextEntity
         return word2.compareTo(word1);
     }
     
-    public void setWord(String word) throws NullInitException {
+    public void setWord(String word) throws InitException {
             if (word == null || word.isEmpty()) {
-                throw new NullInitException("word is null or empty.");
+                throw new InitException("word is null or empty.");
             }
             this.word = word;
     }

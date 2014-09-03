@@ -38,14 +38,14 @@ public class TextParser {
         sb = readFileToString(fileName);
         try {
             return parseText(sb.toString(), 0);
-        } catch (NullInitException ex) {
+        } catch (InitException ex) {
             throw new LogicException("Error in parsing text "
                     + "recursion.", ex);
         }
     }
     
     private static TextEntity parseText(String str, int i)
-            throws LogicException, NullInitException {
+            throws LogicException, InitException {
         //разбиение текста по параграфам и блокам текста/листинга
         
         if (i >= REGULEX.length) {
@@ -54,7 +54,7 @@ public class TextParser {
         BlockEntity block = new BlockEntity(); //текст, параграф, подпараграф
         if (str == null || str.isEmpty())
         {
-            throw new NullInitException("ReorgText: string is null or empty.");
+            throw new InitException("ReorgText: string is null or empty.");
         }
         Pattern pat = Pattern.compile(REGULEX[i], Pattern.MULTILINE);
         Matcher mat = pat.matcher(str);
@@ -69,7 +69,7 @@ public class TextParser {
             try {
                 //парсим названия параграфов и подпараграфов, , абзацы текста
                 block.setTextEntity(parseParagraph(mat.group()));
-            } catch (NullInitException ex) {
+            } catch (InitException ex) {
                 localLog.error("Parsing paragraph string was interrupted.");
             }
             st = mat.end();
@@ -95,7 +95,7 @@ public class TextParser {
                 try {
                     block.setTextEntity(parseSentence(
                             str.substring(st, mat.end())));
-                } catch (NullInitException ex) {
+                } catch (InitException ex) {
                     localLog.error("Parsing paragraph string was interrupted.");
                 }
                 st = mat.end();
@@ -106,7 +106,7 @@ public class TextParser {
             try {
                 block.setTextEntity(parseSentence(
                         str.substring(st, str.length())));
-            } catch (NullInitException ex) {
+            } catch (InitException ex) {
                 localLog.error("Parsing paragraph string was interrupted.");
             }
         }
@@ -143,7 +143,7 @@ public class TextParser {
             for (char p : punct) {
                 try {
                     block.setTextEntity(new PunctEntity(p));    
-                } catch (NullInitException ex) {
+                } catch (InitException ex) {
                     throw new LogicException("Can't set punctEntity == "
                             + "null", ex);
                 }
@@ -173,7 +173,7 @@ public class TextParser {
             for (char m : mark) {
                 try {    
                     block.setTextEntity(new MarkEntity(m));
-                } catch (NullInitException ex) {
+                } catch (InitException ex) {
                     throw new LogicException("Can't set markEntity == "
                             + "null", ex);
                 }
@@ -198,7 +198,7 @@ public class TextParser {
                 try {
                     //оставшуюся подстроку как слово заносим в структуру
                     block.setTextEntity(new WordEntity(str1)); 
-                } catch (NullInitException ex) {
+                } catch (InitException ex) {
                     throw new LogicException("Can't set wordEntity == null or "
                             + "empty", ex);
                 }
@@ -208,7 +208,7 @@ public class TextParser {
             for (char n : num) {
                 try {    
                     block.setTextEntity(new NumEntity(n));
-                } catch (NullInitException ex) {
+                } catch (InitException ex) {
                     throw new LogicException("Can't set numEntity == null", ex);
                 }
             }
@@ -218,7 +218,7 @@ public class TextParser {
             String str1 = str.substring(st, str.length());
             try {
                 block.setTextEntity(new WordEntity(str1));
-            } catch (NullInitException ex) {
+            } catch (InitException ex) {
                 throw new LogicException("Can't set wordEntity == null or "
                         + "empty", ex);
             }
@@ -268,7 +268,7 @@ public class TextParser {
             returned = false; //обнуляем флаг возврата
             try {
                 block.setTextEntity(parseCodeString(str)); //парсим строку кода текущего уровня по пунктуации, словам и др.
-            } catch (NullInitException ex) {
+            } catch (InitException ex) {
                 localLog.error("Parsing code string was interrupted.");
             }
             it.remove();
@@ -277,7 +277,7 @@ public class TextParser {
                 try {
                     //если строка содержит символ {, то рекурсивно обрабатываем следующие строки
                     block.setTextEntity(parseCode(list));
-                } catch (NullInitException ex) {
+                } catch (InitException ex) {
                     throw new LogicException("Error in parsing code recursion.", ex);
                 }
                 it = list.iterator(); //переинициализация итератора по возвращению из рекурсии

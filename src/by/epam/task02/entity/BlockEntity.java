@@ -6,7 +6,7 @@
 
 package by.epam.task02.entity;
 
-import by.epam.task02.exception.NullInitException;
+import by.epam.task02.exception.InitException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,9 +52,9 @@ public class BlockEntity extends TextEntity{
         return str.toString();
     }
      
-    public void setTextEntity(TextEntity textEntity) throws NullInitException{
+    public void setTextEntity(TextEntity textEntity) throws InitException{
         if (textEntity == null) {
-            throw new NullInitException("textEntity is null.");
+            throw new InitException("textEntity is null.");
         }
         this.textEntity.add(textEntity);
     }
